@@ -3,10 +3,10 @@ import {
   View,
   Text,
   ScrollView,
-  Image,
   TouchableOpacity,
   ActivityIndicator,
   SafeAreaView,
+  Dimensions,
 } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +16,7 @@ import { mockSpots } from '../../../tempData/mockApi';
 import { useAuth } from '../../../providers/AuthProvider';
 import { Badge } from '../../profile/components/StatBadge';
 import { styles } from './SpotDetailScreen.styles';
+import ImageCarousel from '../components/ImageCarousel';
 
 type SpotDetailScreenRouteProp = RouteProp<RootStackParamList, 'SpotDetail'>;
 
@@ -36,7 +37,6 @@ export default function SpotDetailScreen() {
       const spotDetails = await mockSpots.getSpotById(route.params.spotId);
       if (spotDetails) {
         setSpot(spotDetails);
-        // Check if spot is saved by user
         setIsSaved(
           authState.user?.savedSpots.includes(spotDetails.id) || false
         );
@@ -68,42 +68,28 @@ export default function SpotDetailScreen() {
     );
   }
 
+  // Generate mock images for demo
+  const mockImages = Array(5).fill(null).map((_, i) => 
+    `https://picsum.photos/800/400?random=${spot.id}-${i}`
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.modalHeader}>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="close" size={28} color="#666" />
-        </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.carouselContainer}>
+        <ImageCarousel 
+          images={mockImages}
+          onClose={() => navigation.goBack()}
+        />
       </View>
 
-      <ScrollView style={styles.scrollView} bounces={false}>
-        <Image
-          source={{ uri: `https://picsum.photos/800/400?random=${spot.id}` }}
-          style={styles.image}
-        />
-
+      <ScrollView style={styles.detailsContainer} bounces={false}>
         <View style={styles.content}>
           <View style={styles.header}>
-            <View>
+            <View style={styles.titleContainer}>
               <Text style={styles.name}>{spot.name}</Text>
-              <View style={styles.badgeContainer}>
-                <Badge
-                  value={spot.views}
-                  label={spot.category}
-                  type="category"
-                  variant="filled"
-                  size="sm"
-                />
-                <Badge
-                  value={spot.rating ? Math.round(spot.rating * 100) : 0}
-                  label="Rating"
-                  type="category"
-                  variant="light"
-                  size="sm"
-                />
+              <View style={styles.ratingContainer}>
+                <Ionicons name="star" size={20} color="#FFD700" />
+                <Text style={styles.rating}>{spot.rating?.toFixed(1)}</Text>
               </View>
             </View>
 
@@ -121,9 +107,21 @@ export default function SpotDetailScreen() {
             )}
           </View>
 
-          <View style={styles.ratingContainer}>
-            <Ionicons name="star" size={20} color="#FFD700" />
-            <Text style={styles.rating}>{spot.rating?.toFixed(1)}</Text>
+          <View style={styles.badgeContainer}>
+            <Badge
+              value={spot.views}
+              label={spot.category}
+              type="category"
+              variant="filled"
+              size="sm"
+            />
+            <Badge
+              value={spot.rating ? Math.round(spot.rating * 100) : 0}
+              label="Rating"
+              type="category"
+              variant="light"
+              size="sm"
+            />
           </View>
 
           <Text style={styles.description}>{spot.description}</Text>
@@ -142,10 +140,8 @@ export default function SpotDetailScreen() {
               <Text style={styles.infoText}>{spot.address}</Text>
             </View>
           )}
-
-          {/* TODO: Add more details like opening hours, website, etc. */}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 } 

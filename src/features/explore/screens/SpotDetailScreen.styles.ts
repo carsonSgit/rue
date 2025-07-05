@@ -1,24 +1,17 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  scrollView: {
+  carouselContainer: {
+    height: height * 0.6, // 60% of screen height
+  },
+  detailsContainer: {
     flex: 1,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    padding: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  closeButton: {
-    padding: 8,
   },
   loadingContainer: {
     flex: 1,
@@ -35,11 +28,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
-  image: {
-    width: '100%',
-    height: 250,
-    resizeMode: 'cover',
-  },
   content: {
     padding: 20,
   },
@@ -49,15 +37,15 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 16,
   },
+  titleContainer: {
+    flex: 1,
+    marginRight: 16,
+  },
   name: {
     fontSize: 24,
     fontWeight: '600',
     color: '#1a1a1a',
     marginBottom: 8,
-  },
-  category: {
-    fontSize: 16,
-    color: '#666',
   },
   saveButton: {
     padding: 8,
@@ -65,31 +53,37 @@ export const styles = StyleSheet.create({
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 8,
   },
   rating: {
+    marginLeft: 4,
     fontSize: 16,
     color: '#1a1a1a',
-    marginLeft: 4,
+    fontWeight: '500',
   },
   description: {
     fontSize: 16,
     color: '#666',
     lineHeight: 24,
+    marginVertical: 16,
+  },
+  badgeContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
     marginBottom: 16,
   },
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: 16,
+    marginVertical: 16,
+    gap: 8,
   },
   tag: {
     backgroundColor: '#f0f0f0',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    marginRight: 8,
-    marginBottom: 8,
   },
   tagText: {
     color: '#666',
@@ -104,10 +98,5 @@ export const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 16,
     color: '#666',
-  },
-  badgeContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
   },
 }); 

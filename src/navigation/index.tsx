@@ -38,10 +38,10 @@ function MainTabs() {
 
           switch (route.name) {
             case 'Explore':
-              iconName = focused ? 'map' : 'map-outline';
+              iconName = focused ? 'compass' : 'compass-outline';
               break;
             case 'Itineraries':
-              iconName = focused ? 'list' : 'list-outline';
+              iconName = focused ? 'map' : 'map-outline';
               break;
             case 'Profile':
               iconName = focused ? 'person' : 'person-outline';
@@ -50,7 +50,7 @@ function MainTabs() {
               iconName = 'help-outline';
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName as any} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#FF385C',
         tabBarInactiveTintColor: 'gray',
@@ -82,8 +82,15 @@ export default function Navigation() {
               name="SpotDetail" 
               component={SpotDetailScreen}
               options={{
-                headerShown: true,
+                headerShown: false,
                 presentation: 'modal',
+                cardStyle: { backgroundColor: 'transparent' },
+                cardOverlayEnabled: true,
+                cardStyleInterpolator: ({ current: { progress } }) => ({
+                  cardStyle: {
+                    opacity: progress,
+                  },
+                }),
               }}
             />
           </>
